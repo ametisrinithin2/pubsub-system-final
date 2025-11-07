@@ -53,9 +53,16 @@ All endpoints return JSON. Server runs on port 3000 by default.
 
 Create a new topic in the system.
 
-**Request:**
+**Request (Local):**
 ```bash
 curl -X POST http://localhost:3000/api/topics \
+  -H "Content-Type: application/json" \
+  -d '{"name":"orders"}'
+```
+
+**Request (Production):**
+```bash
+curl -X POST https://pubsub-system-final.vercel.app/api/topics \
   -H "Content-Type: application/json" \
   -d '{"name":"orders"}'
 ```
@@ -84,10 +91,17 @@ curl -X POST http://localhost:3000/api/topics \
 
 List all topics with subscriber counts.
 
-**Request:**
+**Request (Local):**
 ```bash
 curl http://localhost:3000/api/topics
 ```
+
+**Request (Production):**
+```bash
+curl https://pubsub-system-final.vercel.app/api/topics
+```
+
+
 
 **Response (200 OK):**
 ```json
@@ -105,9 +119,14 @@ curl http://localhost:3000/api/topics
 
 Delete a topic. Fails if topic has active subscribers.
 
-**Request:**
+**Request (Local):**
 ```bash
 curl -X DELETE http://localhost:3000/api/topics/orders
+```
+
+**Request (Production):**
+```bash
+curl -X DELETE https://pubsub-system-final.vercel.app/api/topics/orders
 ```
 
 **Response (200 OK):**
@@ -144,7 +163,7 @@ curl -X DELETE http://localhost:3000/api/topics/orders
 
 Publish a message to a topic. Message is stored in memory and broadcasted via Pusher.
 
-**Request (with message ID):**
+**Request (with message ID - Local):**
 ```bash
 curl -X POST http://localhost:3000/api/publish \
   -H "Content-Type: application/json" \
@@ -157,9 +176,34 @@ curl -X POST http://localhost:3000/api/publish \
   }'
 ```
 
-**Request (auto-generate ID):**
+**Request (with message ID - Production):**
+```bash
+curl -X POST https://pubsub-system-final.vercel.app/api/publish \
+  -H "Content-Type: application/json" \
+  -d '{
+    "topic": "orders",
+    "message": {
+      "id": "msg-001",
+      "payload": {"order": "Order #1", "amount": 100}
+    }
+  }'
+```
+
+**Request (auto-generate ID - Local):**
 ```bash
 curl -X POST http://localhost:3000/api/publish \
+  -H "Content-Type: application/json" \
+  -d '{
+    "topic": "orders",
+    "message": {
+      "payload": {"order": "Order #2", "amount": 200}
+    }
+  }'
+```
+
+**Request (auto-generate ID - Production):**
+```bash
+curl -X POST https://pubsub-system-final.vercel.app/api/publish \
   -H "Content-Type: application/json" \
   -d '{
     "topic": "orders",
@@ -204,9 +248,14 @@ curl -X POST http://localhost:3000/api/publish \
 
 Server health and statistics.
 
-**Request:**
+**Request (Local):**
 ```bash
 curl http://localhost:3000/api/health
+```
+
+**Request (Production):**
+```bash
+curl https://pubsub-system-final.vercel.app/api/health
 ```
 
 **Response (200 OK):**
@@ -224,9 +273,14 @@ curl http://localhost:3000/api/health
 
 Detailed statistics for all topics.
 
-**Request:**
+**Request (Local):**
 ```bash
 curl http://localhost:3000/api/stats
+```
+
+**Request (Production):**
+```bash
+curl https://pubsub-system-final.vercel.app/api/stats
 ```
 
 **Response (200 OK):**
@@ -255,13 +309,22 @@ curl http://localhost:3000/api/stats
 
 Retrieve last N messages from a topic's ring buffer.
 
-**Request:**
+**Request (Local):**
 ```bash
 # Get last 5 messages
 curl "http://localhost:3000/api/history?topic=orders&last_n=5"
 
 # Get last 10 messages (default)
 curl "http://localhost:3000/api/history?topic=orders"
+```
+
+**Request (Production):**
+```bash
+# Get last 5 messages
+curl "https://pubsub-system-final.vercel.app/api/history?topic=orders&last_n=5"
+
+# Get last 10 messages (default)
+curl "https://pubsub-system-final.vercel.app/api/history?topic=orders"
 ```
 
 **Response (200 OK):**
