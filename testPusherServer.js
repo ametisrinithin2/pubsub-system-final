@@ -17,9 +17,9 @@ const isConfigured = validatePusherConfig();
 
 if (!isConfigured) {
   console.log('\n⚠️  Pusher is not configured.');
-  console.log('This is expected in CI or if .env.local is not set up yet.');
+  console.log('This is expected in CI or if credentials are not hardcoded yet.');
   console.log('\nTo test with actual Pusher:');
-  console.log('1. Copy .env.local.example to .env.local');
+  console.log('1. Update the hardcoded credentials in lib/pusherServer.js');
   console.log('2. Add your Pusher credentials from https://pusher.com/');
   console.log('3. Run this script again\n');
   process.exit(0);

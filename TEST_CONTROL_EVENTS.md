@@ -5,7 +5,7 @@ This guide shows how to test the real-time topic management events.
 ## Prerequisites
 
 1. **Pusher Configured**
-   - Must have valid Pusher credentials in `.env.local`
+   - Pusher credentials are hardcoded in the application
    - Server must be running: `npm run dev`
 
 2. **Pusher Dashboard Access**
@@ -343,10 +343,8 @@ export function TopicList() {
 ### Events Not Appearing
 
 1. **Check Pusher Credentials**
-   ```bash
-   # Verify .env.local has correct values
-   cat .env.local
-   ```
+   - Pusher credentials are hardcoded in `lib/pusherServer.js`
+   - Verify they are correctly set in the code
 
 2. **Check Server Logs**
    - Should see: `✓ Emitted topic_created event`

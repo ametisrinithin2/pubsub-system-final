@@ -172,8 +172,10 @@ This is the key test for verifying real-time functionality!
 
 ### Test: Missing Pusher Credentials
 
+**Note:** Pusher credentials are hardcoded in the application. To test this scenario:
+
 1. Stop the server
-2. Remove or comment out `NEXT_PUBLIC_PUSHER_KEY` in `.env.local`
+2. Edit `pages/index.js` and temporarily set `pusherKey` to an empty string
 3. Restart server
 4. Open http://localhost:3000
 

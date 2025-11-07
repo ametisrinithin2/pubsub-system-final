@@ -100,7 +100,7 @@
 ✅ **Local Development** - npm run dev  
 ✅ **Docker Container** - Multi-stage build  
 ✅ **Vercel Serverless** - One-click deploy  
-✅ **Environment Config** - .env.local support  
+✅ **Hardcoded Credentials** - No env setup required  
 ✅ **Production Server** - Graceful shutdown  
 
 ---
@@ -160,8 +160,7 @@
 ```bash
 cd /Users/ametisrinithin/Desktop/p_assignment
 npm install
-cp .env.local.example .env.local
-# Add Pusher credentials to .env.local
+# Pusher credentials are already hardcoded in the application
 ```
 
 ### 2. Start Server (30 seconds)

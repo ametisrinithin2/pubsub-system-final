@@ -35,7 +35,7 @@ export default function Home() {
     const pusherCluster = "ap2";
 
     if (!pusherKey || !pusherCluster) {
-      setError('Pusher credentials not configured. Set NEXT_PUBLIC_PUSHER_KEY and NEXT_PUBLIC_PUSHER_CLUSTER in .env.local');
+      setError('Pusher credentials not configured. Please check the hardcoded values in the code.');
       return;
     }
 

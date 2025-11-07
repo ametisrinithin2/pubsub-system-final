@@ -30,28 +30,11 @@ if [ "$1" == "run" ]; then
   docker stop $CONTAINER_NAME 2>/dev/null || true
   docker rm $CONTAINER_NAME 2>/dev/null || true
   
-  # Check if .env.local exists
-  if [ ! -f .env.local ]; then
-    echo "⚠️  Warning: .env.local not found"
-    echo "   Create .env.local with Pusher credentials to test real-time features"
-    echo ""
-  fi
-  
   # Run the container
-  if [ -f .env.local ]; then
-    # Run with environment variables from .env.local
-    docker run -d \
-      -p $PORT:$PORT \
-      --env-file .env.local \
-      --name $CONTAINER_NAME \
-      $IMAGE_NAME
-  else
-    # Run without environment variables (will work but Pusher features won't)
-    docker run -d \
-      -p $PORT:$PORT \
-      --name $CONTAINER_NAME \
-      $IMAGE_NAME
-  fi
+  docker run -d \
+    -p $PORT:$PORT \
+    --name $CONTAINER_NAME \
+    $IMAGE_NAME
   
   echo "✓ Container started: $CONTAINER_NAME"
   echo "✓ Accessible at: http://localhost:$PORT"
@@ -82,11 +65,7 @@ elif [ "$1" == "test" ]; then
   docker rm $CONTAINER_NAME 2>/dev/null || true
   
   # Run container
-  if [ -f .env.local ]; then
-    docker run -d -p $PORT:$PORT --env-file .env.local --name $CONTAINER_NAME $IMAGE_NAME
-  else
-    docker run -d -p $PORT:$PORT --name $CONTAINER_NAME $IMAGE_NAME
-  fi
+  docker run -d -p $PORT:$PORT --name $CONTAINER_NAME $IMAGE_NAME
   
   echo "Waiting for server to start..."
   sleep 5
@@ -118,6 +97,6 @@ else
   echo "  ./docker-build.sh test"
   echo ""
   echo "To run manually:"
-  echo "  docker run -d -p 3000:3000 --env-file .env.local --name pubsub $IMAGE_NAME"
+  echo "  docker run -d -p 3000:3000 --name pubsub $IMAGE_NAME"
 fi
 
