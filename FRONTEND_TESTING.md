@@ -9,36 +9,17 @@ Complete guide for testing the Next.js PubSub frontend.
    npm install
    ```
 
-2. **Configure Pusher**
-   
-   Create `.env.local`:
-   ```bash
-   cp .env.local.example .env.local
-   ```
-
-   Edit `.env.local` with your Pusher credentials:
-   ```bash
-   PUSHER_APP_ID=your_app_id
-   PUSHER_KEY=your_key
-   PUSHER_SECRET=your_secret
-   PUSHER_CLUSTER=your_cluster
-
-   # Frontend credentials (same key, no secret)
-   NEXT_PUBLIC_PUSHER_KEY=your_key
-   NEXT_PUBLIC_PUSHER_CLUSTER=your_cluster
-   ```
-
-   **Note:** `NEXT_PUBLIC_*` variables are exposed to the browser!
-
-3. **Start Development Server**
+2. **Start Development Server**
    ```bash
    npm run dev
    ```
 
-4. **Open Browser**
+3. **Open Browser**
    ```
    http://localhost:3000
    ```
+
+**Note:** Pusher credentials are already configured in the application.
 
 ---
 
@@ -314,14 +295,6 @@ Unsubscribing from topic-orders...
 
 ## Common Issues & Solutions
 
-### Issue: "Pusher credentials not configured"
-
-**Solution:**
-1. Check `.env.local` exists
-2. Verify `NEXT_PUBLIC_PUSHER_KEY` and `NEXT_PUBLIC_PUSHER_CLUSTER` are set
-3. Restart dev server (`npm run dev`)
-4. Hard refresh browser (Ctrl+Shift+R or Cmd+Shift+R)
-
 ### Issue: Topics created but not showing in list
 
 **Solution:**
@@ -335,16 +308,14 @@ Unsubscribing from topic-orders...
 **Solution:**
 1. Make sure topic is selected (should be highlighted)
 2. Check console for "Subscribing to topic-..." message
-3. Verify Pusher credentials are correct
-4. Check Pusher Dashboard for message events
+3. Check Pusher Dashboard for message events
 
 ### Issue: Real-time not working between tabs
 
 **Solution:**
 1. Verify both tabs show "● Connected"
 2. Check that events appear in Pusher Dashboard
-3. Verify `.env.local` has the same key for `PUSHER_KEY` and `NEXT_PUBLIC_PUSHER_KEY`
-4. Try opening an incognito window as second tab
+3. Try opening an incognito window as second tab
 
 ### Issue: Messages appear twice
 

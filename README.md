@@ -28,20 +28,12 @@ This is a demonstration PubSub system featuring:
 
 - Node.js 18.x or later
 - npm or yarn
-- Pusher account (free tier available at https://pusher.com/)
 
 ### Installation
 
 ```bash
-# Clone or navigate to project directory
-cd /Users/ametisrinithin/Desktop/p_assignment
-
 # Install dependencies
 npm install
-
-# Configure environment variables (see next section)
-cp .env.local.example .env.local
-# Edit .env.local with your Pusher credentials
 
 # Start development server
 npm run dev
@@ -49,43 +41,7 @@ npm run dev
 
 Visit http://localhost:3000 to see the UI.
 
----
-
-## Environment Variables
-
-### Required Variables
-
-Create `.env.local` in the project root:
-
-```bash
-# Server-side Pusher credentials (keep secret, never commit)
-PUSHER_APP_ID=your_app_id
-PUSHER_KEY=your_key
-PUSHER_SECRET=your_secret
-PUSHER_CLUSTER=your_cluster
-
-# Client-side Pusher credentials (safe to expose in browser)
-NEXT_PUBLIC_PUSHER_KEY=your_key
-NEXT_PUBLIC_PUSHER_CLUSTER=your_cluster
-```
-
-**Important Notes:**
-- `PUSHER_KEY` and `NEXT_PUBLIC_PUSHER_KEY` should be the SAME value
-- `PUSHER_SECRET` is server-only and must never be exposed to the client
-- Variables prefixed with `NEXT_PUBLIC_` are embedded in the frontend bundle
-- Get credentials from: https://dashboard.pusher.com/ → Your App → App Keys
-
-### Example `.env.local`
-
-```bash
-PUSHER_APP_ID=1234567
-PUSHER_KEY=a1b2c3d4e5f6g7h8i9j0
-PUSHER_SECRET=k9l8m7n6o5p4q3r2s1t0
-PUSHER_CLUSTER=us2
-
-NEXT_PUBLIC_PUSHER_KEY=a1b2c3d4e5f6g7h8i9j0
-NEXT_PUBLIC_PUSHER_CLUSTER=us2
-```
+**Note:** Pusher credentials are already configured in the application. No additional setup required.
 
 ---
 
@@ -350,15 +306,9 @@ docker images | grep pubsub-app
 ### Run Container
 
 ```bash
-# Run with environment variables
+# Run container
 docker run -d \
   -p 3000:3000 \
-  -e PUSHER_APP_ID=your_app_id \
-  -e PUSHER_KEY=your_key \
-  -e PUSHER_SECRET=your_secret \
-  -e PUSHER_CLUSTER=your_cluster \
-  -e NEXT_PUBLIC_PUSHER_KEY=your_key \
-  -e NEXT_PUBLIC_PUSHER_CLUSTER=your_cluster \
   --name pubsub \
   pubsub-app
 
@@ -372,6 +322,8 @@ docker stop pubsub
 docker rm pubsub
 ```
 
+**Note:** Pusher credentials are hardcoded in the application, so no environment variables are needed.
+
 ### Docker Compose (Optional)
 
 Create `docker-compose.yml`:
@@ -383,15 +335,7 @@ services:
     build: .
     ports:
       - "3000:3000"
-    environment:
-      - PUSHER_APP_ID=${PUSHER_APP_ID}
-      - PUSHER_KEY=${PUSHER_KEY}
-      - PUSHER_SECRET=${PUSHER_SECRET}
-      - PUSHER_CLUSTER=${PUSHER_CLUSTER}
-      - NEXT_PUBLIC_PUSHER_KEY=${PUSHER_KEY}
-      - NEXT_PUBLIC_PUSHER_CLUSTER=${PUSHER_CLUSTER}
-    env_file:
-      - .env.local
+    restart: unless-stopped
 ```
 
 Run with:
@@ -424,33 +368,12 @@ vercel
 vercel --prod
 ```
 
-### Step 3: Set Environment Variables in Vercel Dashboard
-
-1. Go to https://vercel.com/dashboard
-2. Select your project
-3. Go to Settings → Environment Variables
-4. Add the following variables:
-
-| Variable | Value | Environment |
-|----------|-------|-------------|
-| `PUSHER_APP_ID` | your_app_id | Production, Preview, Development |
-| `PUSHER_KEY` | your_key | Production, Preview, Development |
-| `PUSHER_SECRET` | your_secret | Production, Preview, Development |
-| `PUSHER_CLUSTER` | your_cluster | Production, Preview, Development |
-| `NEXT_PUBLIC_PUSHER_KEY` | your_key | Production, Preview, Development |
-| `NEXT_PUBLIC_PUSHER_CLUSTER` | your_cluster | Production, Preview, Development |
-
-**Important:** 
-- All variables must be set for all environments
-- Redeploy after adding environment variables
-
-### Step 4: Deploy from GitHub (Recommended)
+### Step 3: Deploy from GitHub (Recommended)
 
 1. Push code to GitHub repository
 2. Import project in Vercel Dashboard
 3. Select the repository
-4. Configure environment variables (see Step 3)
-5. Deploy
+4. Deploy
 
 Vercel will automatically:
 - Install dependencies
@@ -458,7 +381,9 @@ Vercel will automatically:
 - Deploy API routes as serverless functions
 - Set up automatic deployments on git push
 
-### Step 5: Verify Deployment
+**Note:** Pusher credentials are hardcoded, so no environment variable configuration is needed.
+
+### Step 4: Verify Deployment
 
 Visit your deployment URL (e.g., `https://your-app.vercel.app`) and test:
 
@@ -469,11 +394,6 @@ Visit your deployment URL (e.g., `https://your-app.vercel.app`) and test:
 5. Real-time updates work
 
 ### Troubleshooting Vercel Deployment
-
-**Issue: "Pusher credentials not configured"**
-- Verify environment variables are set in Vercel Dashboard
-- Ensure `NEXT_PUBLIC_*` variables are set
-- Redeploy after adding variables
 
 **Issue: Real-time not working**
 - Check Pusher Dashboard for connection errors

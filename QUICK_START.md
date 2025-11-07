@@ -5,31 +5,10 @@ Get the PubSub System running in 5 minutes!
 ## 1. Install Dependencies
 
 ```bash
-cd /Users/ametisrinithin/Desktop/p_assignment
 npm install
 ```
 
-## 2. Configure Pusher
-
-Get free Pusher credentials at https://pusher.com/
-
-Create `.env.local`:
-
-```bash
-# Server-side (keep secret)
-PUSHER_APP_ID=your_app_id
-PUSHER_KEY=your_key
-PUSHER_SECRET=your_secret
-PUSHER_CLUSTER=your_cluster
-
-# Client-side (safe to expose)
-NEXT_PUBLIC_PUSHER_KEY=your_key
-NEXT_PUBLIC_PUSHER_CLUSTER=your_cluster
-```
-
-**Important:** Use the SAME key for both `PUSHER_KEY` and `NEXT_PUBLIC_PUSHER_KEY`!
-
-## 3. Start Development Server
+## 2. Start Development Server
 
 ```bash
 npm run dev
@@ -40,7 +19,7 @@ Wait for:
 ✓ Ready in 2.3s
 ```
 
-## 4. Open in Browser
+## 3. Open in Browser
 
 Visit: http://localhost:3000
 
@@ -50,7 +29,7 @@ You should see:
 - **Left Column:** Create Topic form and empty topic list
 - **Right Column:** Publish Message form (disabled until topic selected)
 
-## 5. Test Basic Functionality
+## 4. Test Basic Functionality
 
 ### Create a Topic
 
@@ -74,7 +53,7 @@ You should see:
 2. In the NEW tab, create a topic: `notifications`
 3. **Expected:** In BOTH tabs, "notifications" appears immediately!
 
-## 6. Test with curl (Backend)
+## 5. Test with curl (Backend)
 
 In a terminal:
 
@@ -101,24 +80,15 @@ curl -X POST http://localhost:3000/api/publish \
 
 ## Troubleshooting
 
-### "Pusher credentials not configured"
-
-- Check `.env.local` file exists
-- Verify variables are set correctly
-- Restart server: `Ctrl+C` then `npm run dev`
-- Hard refresh browser: `Ctrl+Shift+R` (or `Cmd+Shift+R` on Mac)
-
 ### "Disconnected" status (red)
 
 - Check internet connection
-- Verify Pusher credentials are correct
 - Check Pusher Dashboard → App Status
 
 ### Topics not syncing between tabs
 
 - Verify BOTH tabs show "Connected"
 - Check browser console (F12) for errors
-- Verify environment variables are set
 - Check Pusher Dashboard → Debug Console for events
 
 ## Success Indicators

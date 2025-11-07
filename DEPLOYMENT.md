@@ -20,15 +20,13 @@ Complete guide for deploying the PubSub system to various environments.
 # Install dependencies
 npm install
 
-# Configure environment
-cp .env.local.example .env.local
-# Edit .env.local with your Pusher credentials
-
 # Start development server
 npm run dev
 ```
 
 Visit http://localhost:3000
+
+**Note:** Pusher credentials are already configured in the application.
 
 ### Development Scripts
 
@@ -47,7 +45,6 @@ npm run lint             # Run ESLint
 ### Prerequisites
 
 - Docker installed and running
-- Pusher credentials (get from https://pusher.com/)
 
 ### Option 1: Quick Build & Run
 
@@ -65,15 +62,9 @@ npm run lint             # Run ESLint
 # Build image
 docker build -t pubsub-app .
 
-# Run with environment variables
+# Run container
 docker run -d \
   -p 3000:3000 \
-  -e PUSHER_APP_ID=your_app_id \
-  -e PUSHER_KEY=your_key \
-  -e PUSHER_SECRET=your_secret \
-  -e PUSHER_CLUSTER=your_cluster \
-  -e NEXT_PUBLIC_PUSHER_KEY=your_key \
-  -e NEXT_PUBLIC_PUSHER_CLUSTER=your_cluster \
   --name pubsub \
   pubsub-app
 
@@ -83,6 +74,8 @@ docker logs -f pubsub
 # Stop and remove
 docker stop pubsub && docker rm pubsub
 ```
+
+**Note:** Pusher credentials are hardcoded in the application.
 
 ### Option 3: Docker Compose
 
@@ -96,8 +89,6 @@ services:
     build: .
     ports:
       - "3000:3000"
-    env_file:
-      - .env.local
     restart: unless-stopped
 ```
 
@@ -176,33 +167,10 @@ vercel --prod
    - Select your GitHub repository
    - Click "Import"
 
-3. **Configure Environment Variables:**
-   - Go to Settings → Environment Variables
-   - Add all required variables (see below)
-   - Redeploy if already deployed
-
-4. **Automatic Deployments:**
+3. **Automatic Deployments:**
    - Push to `main` branch → production deployment
    - Push to other branches → preview deployment
    - Pull requests get preview URLs automatically
-
-### Vercel Environment Variables
-
-Set these in Vercel Dashboard → Settings → Environment Variables:
-
-| Variable | Value | Notes |
-|----------|-------|-------|
-| `PUSHER_APP_ID` | your_app_id | Server-side |
-| `PUSHER_KEY` | your_key | Server-side |
-| `PUSHER_SECRET` | your_secret | Server-side (keep secret!) |
-| `PUSHER_CLUSTER` | your_cluster | Server-side |
-| `NEXT_PUBLIC_PUSHER_KEY` | your_key | Client-side (exposed) |
-| `NEXT_PUBLIC_PUSHER_CLUSTER` | your_cluster | Client-side (exposed) |
-
-**Important:**
-- Set for all environments: Production, Preview, Development
-- `PUSHER_KEY` and `NEXT_PUBLIC_PUSHER_KEY` should have the same value
-- After adding variables, redeploy or push new commit
 
 ### Vercel Configuration
 
@@ -246,53 +214,7 @@ The `vercel.json` file is included with optimal settings:
 
 ---
 
-## Environment Variables
-
-### Required Variables
-
-```bash
-# Server-side (Next.js API routes)
-PUSHER_APP_ID=1234567
-PUSHER_KEY=abc123def456
-PUSHER_SECRET=xyz789uvw012  # Never expose to client!
-PUSHER_CLUSTER=us2
-
-# Client-side (Frontend, embedded in bundle)
-NEXT_PUBLIC_PUSHER_KEY=abc123def456  # Same as PUSHER_KEY
-NEXT_PUBLIC_PUSHER_CLUSTER=us2        # Same as PUSHER_CLUSTER
-```
-
-### Getting Pusher Credentials
-
-1. Go to https://pusher.com/
-2. Sign up or log in
-3. Create a new app (free tier available)
-4. Go to "App Keys" tab
-5. Copy the credentials
-
-### Security Notes
-
-- `PUSHER_SECRET` is server-only, never exposed to browser
-- `NEXT_PUBLIC_*` variables are embedded in frontend bundle
-- Anyone can see `NEXT_PUBLIC_*` values in browser DevTools
-- This is normal and expected for Pusher public key
-
----
-
 ## Troubleshooting
-
-### Issue: "Pusher credentials not configured"
-
-**Symptoms:**
-- Red error banner in UI
-- Status shows "Disconnected"
-- Console error about missing credentials
-
-**Solutions:**
-1. **Local:** Check `.env.local` exists and has correct values
-2. **Docker:** Pass environment variables with `-e` or `--env-file`
-3. **Vercel:** Check environment variables in dashboard
-4. **All:** Restart/redeploy after adding variables
 
 ### Issue: Real-time not working
 
